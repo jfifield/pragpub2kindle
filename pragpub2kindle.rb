@@ -65,8 +65,13 @@ if File.exists?(filepath)
   puts "#{filename} already exists"
 else
   puts "Downloading #{filename}..."
+  begin
+    content = open(url).read
+  rescue OpenURI::HTTPError => e
+    abort "Unable to download #{filename}: #{e.message}"
+  end
   open(filepath, 'wb') do |file|
-    file << open(url).read
+    file << content
   end
   mail_to = options[:mailto]
   mail_from =  options[:mailfrom]
