@@ -67,11 +67,9 @@ else
   puts "Downloading #{filename}..."
   begin
     content = open(url).read
+    File.write(filepath, content)
   rescue OpenURI::HTTPError => e
     abort "Unable to download #{filename}: #{e.message}"
-  end
-  open(filepath, 'wb') do |file|
-    file << content
   end
   mail_to = options[:mailto]
   mail_from =  options[:mailfrom]
